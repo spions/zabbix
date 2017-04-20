@@ -57,5 +57,5 @@ esac
 
 if [[ "$DISK" != "total" ]]
 then grep -w $DISK $FROMFILE | tail -n +2 | tr -s ' ' |awk -v N=$NUMBER 'BEGIN {sum=0.0;count=0;} {sum=sum+$N;count=count+1;} END {printf("%.2f\n", sum/count);}'
-else cat $FROMFILE | tail -n +2 | tr -s ' ' |awk -v N=$NUMBER 'BEGIN {sum=0.0;count=0;} {sum=sum+$N;count=count+1;} END {printf("%.2f\n", sum/count);}'
+else cat $FROMFILE | tail -n +2 | tr -s ' ' |awk -v N=$NUMBER 'BEGIN {sum=0.0;count=0;} {sum=sum+$N;count=count+1;} END { cmd ="iostat -d | tail -n +4 | head -n -1 | wc -l"; cmd | getline disk; close(cmd); printf("%.2f\n", sum*disk/count);}'
 fi
